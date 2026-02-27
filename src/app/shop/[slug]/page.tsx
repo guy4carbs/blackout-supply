@@ -4,7 +4,7 @@ import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useState } from "react";
-import { getProduct, products } from "@/lib/products";
+import { getProduct } from "@/lib/products";
 import NeonButton from "@/components/ui/NeonButton";
 import { ShoppingBag, Zap, Shield, Clock, Star } from "lucide-react";
 
@@ -12,6 +12,8 @@ const GlowDice = dynamic(() => import("@/components/3d/GlowDice"), {
   ssr: false,
   loading: () => <div className="w-full h-full bg-surface animate-pulse" />,
 });
+
+const easeEntry: [number, number, number, number] = [0.25, 0.1, 0.25, 1.0];
 
 const lightingModes = [
   { id: "uv", label: "UV LIGHT", color: "#8F00FF" },
@@ -50,10 +52,10 @@ export default function ProductPage() {
 
   if (!product) {
     return (
-      <main className="min-h-screen bg-[#0A0A0F] pt-28 flex items-center justify-center">
+      <main className="min-h-screen bg-[#0A0A0F] pt-[8.5rem] flex items-center justify-center">
         <div className="text-center">
           <h1
-            className="text-4xl font-black text-glow-white mb-4"
+            className="text-[2.625rem] font-black text-glow-white mb-[1.25rem]"
             style={{ fontFamily: "var(--font-heading)" }}
           >
             PRODUCT NOT FOUND
@@ -72,14 +74,9 @@ export default function ProductPage() {
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          productId: product.id,
-          quantity,
-        }),
+        body: JSON.stringify({ productId: product.id, quantity }),
       });
-
       const data = await res.json();
-
       if (data.url) {
         window.location.href = data.url;
       }
@@ -91,43 +88,32 @@ export default function ProductPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0A0A0F] pt-28 pb-24">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Product Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          {/* Left: 3D Viewer */}
+    <main className="min-h-screen bg-[#0A0A0F] pt-[8.5rem] pb-[5.25rem]">
+      <div className="max-w-[84.72rem] mx-auto px-[1.25rem]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[3.25rem] items-start">
+          {/* 3D Viewer */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, ease: easeEntry }}
           >
-            <div className="aspect-square bg-surface border border-glow-white/5 relative overflow-hidden">
-              <GlowDice
-                interactive
-                glowIntensity={1.5}
-                color={activeMode.color}
-              />
+            <div className="aspect-square bg-surface border border-glow-white/[0.09] relative overflow-hidden">
+              <GlowDice interactive glowIntensity={1.5} color={activeMode.color} />
             </div>
 
-            {/* Lighting toggles */}
-            <div className="flex gap-3 mt-4">
+            <div className="flex gap-3 mt-[1.25rem]">
               {lightingModes.map((mode) => (
                 <button
                   key={mode.id}
                   onClick={() => setActiveMode(mode)}
-                  className={`flex-1 px-4 py-2.5 text-xs tracking-[0.15em] uppercase border transition-all duration-300 cursor-pointer ${
-                    activeMode.id === mode.id
-                      ? "opacity-100"
-                      : "opacity-40 hover:opacity-60"
+                  className={`flex-1 px-[1.25rem] py-[0.5rem] text-[0.625rem] tracking-[0.162em] uppercase border transition-all duration-300 cursor-pointer ${
+                    activeMode.id === mode.id ? "opacity-100" : "opacity-[0.382] hover:opacity-[0.618]"
                   }`}
                   style={{
                     fontFamily: "var(--font-heading)",
                     color: mode.color,
                     borderColor: activeMode.id === mode.id ? mode.color : "#ffffff15",
-                    boxShadow:
-                      activeMode.id === mode.id
-                        ? `0 0 15px ${mode.color}30`
-                        : "none",
+                    boxShadow: activeMode.id === mode.id ? `0 0 13px ${mode.color}3D` : "none",
                   }}
                 >
                   {mode.label}
@@ -136,114 +122,100 @@ export default function ProductPage() {
             </div>
           </motion.div>
 
-          {/* Right: Product Info */}
+          {/* Product Info */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="space-y-8"
+            transition={{ duration: 0.8, delay: 0.185, ease: easeEntry }}
+            className="space-y-[2rem]"
           >
             <div>
               <p
-                className="text-neon-pink text-sm tracking-[0.3em] mb-2 uppercase"
+                className="text-neon-pink text-[0.625rem] tracking-[0.262em] mb-[0.5rem] uppercase"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
                 Black Out Supply
               </p>
               <h1
-                className="text-4xl md:text-5xl font-black text-glow-white tracking-wider"
+                className="text-[2.625rem] font-black text-glow-white tracking-[0.1em]"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
                 {product.name}
               </h1>
-              <p className="text-glow-white/60 mt-3">{product.tagline}</p>
+              <p className="text-glow-white/[0.618] mt-[0.75rem]">{product.tagline}</p>
             </div>
 
-            {/* Price */}
-            <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-neon-cyan">
-                ${product.price}
-              </span>
+            <div className="flex items-center gap-[1.25rem]">
+              <span className="text-[2.625rem] font-bold text-neon-cyan">${product.price}</span>
               {product.comparePrice && (
-                <span className="text-glow-white/30 line-through text-lg">
-                  ${product.comparePrice}
-                </span>
+                <span className="text-glow-white/[0.236] line-through text-[1rem]">${product.comparePrice}</span>
               )}
               {product.comparePrice && (
-                <span className="text-neon-pink text-sm tracking-wider uppercase bg-neon-pink/10 px-3 py-1">
+                <span className="text-neon-pink text-[0.625rem] tracking-[0.1em] uppercase bg-neon-pink/[0.09] px-[0.75rem] py-[0.25rem]">
                   SAVE ${(product.comparePrice - product.price).toFixed(2)}
                 </span>
               )}
             </div>
 
-            {/* Description */}
-            <p className="text-glow-white/60 leading-relaxed">
-              {product.description}
-            </p>
+            <p className="text-glow-white/[0.618] leading-relaxed">{product.description}</p>
 
-            {/* Features */}
-            <ul className="space-y-3">
+            <ul className="space-y-[0.75rem]">
               {product.features.map((feature, i) => (
-                <li key={i} className="flex items-center gap-3 text-glow-white/70">
-                  <Zap size={14} className="text-neon-cyan flex-shrink-0" />
+                <li key={i} className="flex items-center gap-3 text-glow-white/[0.618]">
+                  <Zap size={13} className="text-neon-cyan flex-shrink-0" />
                   {feature}
                 </li>
               ))}
             </ul>
 
-            {/* Quantity */}
             <div>
-              <label className="text-sm text-glow-white/50 tracking-wider uppercase block mb-2">
+              <label className="text-[0.625rem] text-glow-white/[0.382] tracking-[0.1em] uppercase block mb-[0.5rem]">
                 Quantity
               </label>
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 border border-glow-white/10 text-glow-white/70 hover:border-neon-cyan/50 transition-colors flex items-center justify-center cursor-pointer"
+                  className="w-[2.5rem] h-[2.5rem] border border-glow-white/[0.09] text-glow-white/[0.618] hover:border-neon-cyan/[0.382] transition-colors flex items-center justify-center cursor-pointer"
                 >
                   −
                 </button>
-                <span className="w-12 text-center text-glow-white text-lg font-bold">
-                  {quantity}
-                </span>
+                <span className="w-[3rem] text-center text-glow-white text-[1rem] font-bold">{quantity}</span>
                 <button
                   onClick={() => setQuantity(Math.min(10, quantity + 1))}
-                  className="w-10 h-10 border border-glow-white/10 text-glow-white/70 hover:border-neon-cyan/50 transition-colors flex items-center justify-center cursor-pointer"
+                  className="w-[2.5rem] h-[2.5rem] border border-glow-white/[0.09] text-glow-white/[0.618] hover:border-neon-cyan/[0.382] transition-colors flex items-center justify-center cursor-pointer"
                 >
                   +
                 </button>
               </div>
             </div>
 
-            {/* Checkout buttons */}
-            <div className="space-y-3">
+            <div className="space-y-[0.75rem]">
               <button
                 onClick={handleCheckout}
                 disabled={isLoading}
-                className="w-full py-4 bg-neon-pink text-white text-sm font-bold tracking-[0.2em] uppercase hover:bg-neon-pink/90 transition-all neon-pulse flex items-center justify-center gap-3 cursor-pointer disabled:opacity-50"
+                className="w-full py-[1.25rem] bg-neon-pink text-white text-[0.625rem] font-bold tracking-[0.162em] uppercase hover:bg-neon-pink/[0.9] transition-all neon-pulse flex items-center justify-center gap-3 cursor-pointer disabled:opacity-[0.382]"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
                 <ShoppingBag size={18} />
                 {isLoading ? "PROCESSING..." : `BUY NOW — $${(product.price * quantity).toFixed(2)}`}
               </button>
-              <p className="text-center text-glow-white/30 text-xs tracking-wider">
+              <p className="text-center text-glow-white/[0.236] text-[0.625rem] tracking-[0.1em]">
                 SECURE CHECKOUT WITH STRIPE • APPLE PAY • GOOGLE PAY
               </p>
             </div>
 
-            {/* Trust badges */}
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-glow-white/5">
+            <div className="grid grid-cols-3 gap-[1.25rem] pt-[1.25rem] border-t border-glow-white/[0.09]">
               <div className="text-center">
-                <Shield size={20} className="text-neon-cyan mx-auto mb-1" />
-                <p className="text-xs text-glow-white/40">Secure Checkout</p>
+                <Shield size={20} className="text-neon-cyan mx-auto mb-[0.25rem]" />
+                <p className="text-[0.625rem] text-glow-white/[0.382]">Secure Checkout</p>
               </div>
               <div className="text-center">
-                <Clock size={20} className="text-neon-cyan mx-auto mb-1" />
-                <p className="text-xs text-glow-white/40">Fast Shipping</p>
+                <Clock size={20} className="text-neon-cyan mx-auto mb-[0.25rem]" />
+                <p className="text-[0.625rem] text-glow-white/[0.382]">Fast Shipping</p>
               </div>
               <div className="text-center">
-                <Star size={20} className="text-neon-cyan mx-auto mb-1" />
-                <p className="text-xs text-glow-white/40">5-Star Rated</p>
+                <Star size={20} className="text-neon-cyan mx-auto mb-[0.25rem]" />
+                <p className="text-[0.625rem] text-glow-white/[0.382]">5-Star Rated</p>
               </div>
             </div>
           </motion.div>
@@ -254,23 +226,20 @@ export default function ProductPage() {
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.8, ease: easeEntry }}
             viewport={{ once: true }}
-            className="mt-24"
+            className="mt-[5.25rem]"
           >
             <h2
-              className="text-2xl font-bold text-glow-white tracking-[0.2em] mb-8 text-center"
+              className="text-[1.625rem] font-bold text-glow-white tracking-[0.162em] mb-[2rem] text-center"
               style={{ fontFamily: "var(--font-heading)" }}
             >
               SPECIFICATIONS
             </h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-[1.25rem] max-w-[52.36rem] mx-auto">
               {product.specs.map((spec, i) => (
-                <div
-                  key={i}
-                  className="bg-surface border border-glow-white/5 p-4 text-center"
-                >
-                  <p className="text-glow-white/40 text-xs tracking-wider uppercase mb-1">
+                <div key={i} className="bg-surface border border-glow-white/[0.09] p-[1.25rem] text-center">
+                  <p className="text-glow-white/[0.382] text-[0.625rem] tracking-[0.1em] uppercase mb-[0.25rem]">
                     {spec.label}
                   </p>
                   <p className="text-glow-white font-bold">{spec.value}</p>
@@ -284,39 +253,30 @@ export default function ProductPage() {
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, ease: easeEntry }}
           viewport={{ once: true }}
-          className="mt-24"
+          className="mt-[5.25rem]"
         >
           <h2
-            className="text-2xl font-bold text-glow-white tracking-[0.2em] mb-8 text-center"
+            className="text-[1.625rem] font-bold text-glow-white tracking-[0.162em] mb-[2rem] text-center"
             style={{ fontFamily: "var(--font-heading)" }}
           >
             REVIEWS
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-[1.25rem] max-w-[52.36rem] mx-auto">
             {reviews.map((review, i) => (
-              <div
-                key={i}
-                className="bg-surface border border-glow-white/5 p-6"
-              >
-                <div className="flex gap-1 mb-3">
+              <div key={i} className="bg-surface border border-glow-white/[0.09] p-[1.25rem]">
+                <div className="flex gap-[0.25rem] mb-[0.75rem]">
                   {Array.from({ length: review.rating }).map((_, j) => (
-                    <Star
-                      key={j}
-                      size={14}
-                      className="text-neon-pink fill-neon-pink"
-                    />
+                    <Star key={j} size={13} className="text-neon-pink fill-neon-pink" />
                   ))}
                 </div>
-                <p className="text-glow-white/60 text-sm leading-relaxed mb-4">
+                <p className="text-glow-white/[0.618] text-[0.625rem] leading-relaxed mb-[1.25rem]">
                   &ldquo;{review.text}&rdquo;
                 </p>
                 <div>
-                  <p className="text-glow-white font-bold text-sm">
-                    {review.name}
-                  </p>
-                  <p className="text-glow-white/30 text-xs">{review.school}</p>
+                  <p className="text-glow-white font-bold text-[0.625rem]">{review.name}</p>
+                  <p className="text-glow-white/[0.236] text-[0.625rem]">{review.school}</p>
                 </div>
               </div>
             ))}

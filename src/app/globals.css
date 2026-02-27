@@ -1,6 +1,21 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════
+   BLACK OUT SUPPLY — Mathematical Design System
+
+   Color System: Near-Golden Angle Triad
+     Cyan:   HSL(184, 100%, 50%) — anchor
+     Pink:   HSL(330, 100%, 59%) — 146° from cyan (~golden angle 137.5°)
+     Purple: HSL(274, 100%, 50%) — 90° from cyan (quadrant complement)
+
+   Typography: Golden Ratio Scale (φ = 1.618, base = 16px)
+   Spacing: Fibonacci Sequence (base unit = 4px)
+   Animation: Golden Ratio Timing (base = 300ms)
+   Shadows: Fibonacci blur radii, φ-inverse opacity decay
+   ═══════════════════════════════════════════════════════════════ */
+
 @theme inline {
+  /* Colors */
   --color-background: #0A0A0F;
   --color-foreground: #E6FFFF;
   --color-neon-pink: #FF2E9F;
@@ -10,6 +25,8 @@
   --color-midnight: #0D0D1A;
   --color-surface: #111122;
   --color-surface-light: #1A1A2E;
+
+  /* Font families */
   --font-sans: var(--font-heading);
   --font-mono: var(--font-body);
 }
@@ -31,7 +48,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Smooth scrollbar */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -45,32 +62,36 @@ body {
   border-radius: 3px;
 }
 
-/* Neon glow utilities */
+/* ═══════════════════════════════════════
+   Neon Glow Utilities — Fibonacci Blur Radii (8, 13, 21, 34px)
+   Opacity Decay: φ⁻¹=0.618, φ⁻²=0.382, φ⁻³=0.236, φ⁻⁴=0.146
+   ═══════════════════════════════════════ */
+
 .glow-pink {
-  text-shadow: 0 0 10px #FF2E9F, 0 0 20px #FF2E9F, 0 0 40px #FF2E9F;
+  text-shadow: 0 0 8px rgba(255, 46, 159, 0.618), 0 0 13px rgba(255, 46, 159, 0.382), 0 0 21px rgba(255, 46, 159, 0.236), 0 0 34px rgba(255, 46, 159, 0.146);
 }
 
 .glow-cyan {
-  text-shadow: 0 0 10px #00F5FF, 0 0 20px #00F5FF, 0 0 40px #00F5FF;
+  text-shadow: 0 0 8px rgba(0, 245, 255, 0.618), 0 0 13px rgba(0, 245, 255, 0.382), 0 0 21px rgba(0, 245, 255, 0.236), 0 0 34px rgba(0, 245, 255, 0.146);
 }
 
 .glow-purple {
-  text-shadow: 0 0 10px #8F00FF, 0 0 20px #8F00FF, 0 0 40px #8F00FF;
+  text-shadow: 0 0 8px rgba(143, 0, 255, 0.618), 0 0 13px rgba(143, 0, 255, 0.382), 0 0 21px rgba(143, 0, 255, 0.236), 0 0 34px rgba(143, 0, 255, 0.146);
 }
 
 .box-glow-pink {
-  box-shadow: 0 0 15px rgba(255, 46, 159, 0.4), 0 0 30px rgba(255, 46, 159, 0.2);
+  box-shadow: 0 0 13px rgba(255, 46, 159, 0.382), 0 0 21px rgba(255, 46, 159, 0.236), 0 0 34px rgba(255, 46, 159, 0.146);
 }
 
 .box-glow-cyan {
-  box-shadow: 0 0 15px rgba(0, 245, 255, 0.4), 0 0 30px rgba(0, 245, 255, 0.2);
+  box-shadow: 0 0 13px rgba(0, 245, 255, 0.382), 0 0 21px rgba(0, 245, 255, 0.236), 0 0 34px rgba(0, 245, 255, 0.146);
 }
 
 .box-glow-purple {
-  box-shadow: 0 0 15px rgba(143, 0, 255, 0.4), 0 0 30px rgba(143, 0, 255, 0.2);
+  box-shadow: 0 0 13px rgba(143, 0, 255, 0.382), 0 0 21px rgba(143, 0, 255, 0.236), 0 0 34px rgba(143, 0, 255, 0.146);
 }
 
-/* Gradient text utility */
+/* Gradient text utilities */
 .gradient-text-pink-cyan {
   background: linear-gradient(90deg, #FF2E9F, #00F5FF);
   -webkit-background-clip: text;
@@ -85,34 +106,38 @@ body {
   background-clip: text;
 }
 
-/* Neon button glow animation */
+/* ═══════════════════════════════════════
+   Keyframe Animations — Golden Ratio Timing
+   Ambient: 2100ms (300ms × φ⁴)
+   ═══════════════════════════════════════ */
+
 @keyframes neonPulse {
   0%, 100% {
-    box-shadow: 0 0 10px rgba(255, 46, 159, 0.5), 0 0 20px rgba(255, 46, 159, 0.3), 0 0 40px rgba(255, 46, 159, 0.1);
+    box-shadow: 0 0 8px rgba(255, 46, 159, 0.618), 0 0 13px rgba(255, 46, 159, 0.382), 0 0 21px rgba(255, 46, 159, 0.236), 0 0 34px rgba(255, 46, 159, 0.146);
   }
   50% {
-    box-shadow: 0 0 15px rgba(255, 46, 159, 0.7), 0 0 30px rgba(255, 46, 159, 0.5), 0 0 60px rgba(255, 46, 159, 0.2);
+    box-shadow: 0 0 13px rgba(255, 46, 159, 0.618), 0 0 21px rgba(255, 46, 159, 0.382), 0 0 34px rgba(255, 46, 159, 0.236), 0 0 55px rgba(255, 46, 159, 0.146);
   }
 }
 
 @keyframes neonPulseCyan {
   0%, 100% {
-    box-shadow: 0 0 10px rgba(0, 245, 255, 0.5), 0 0 20px rgba(0, 245, 255, 0.3), 0 0 40px rgba(0, 245, 255, 0.1);
+    box-shadow: 0 0 8px rgba(0, 245, 255, 0.618), 0 0 13px rgba(0, 245, 255, 0.382), 0 0 21px rgba(0, 245, 255, 0.236), 0 0 34px rgba(0, 245, 255, 0.146);
   }
   50% {
-    box-shadow: 0 0 15px rgba(0, 245, 255, 0.7), 0 0 30px rgba(0, 245, 255, 0.5), 0 0 60px rgba(0, 245, 255, 0.2);
+    box-shadow: 0 0 13px rgba(0, 245, 255, 0.618), 0 0 21px rgba(0, 245, 255, 0.382), 0 0 34px rgba(0, 245, 255, 0.236), 0 0 55px rgba(0, 245, 255, 0.146);
   }
 }
 
 .neon-pulse {
-  animation: neonPulse 2s ease-in-out infinite;
+  animation: neonPulse 2100ms cubic-bezier(0.4, 0.0, 0.2, 1.0) infinite;
 }
 
 .neon-pulse-cyan {
-  animation: neonPulseCyan 2s ease-in-out infinite;
+  animation: neonPulseCyan 2100ms cubic-bezier(0.4, 0.0, 0.2, 1.0) infinite;
 }
 
-/* Glitch effect */
+/* Glitch — 300ms (micro) */
 @keyframes glitch {
   0%, 100% { transform: translate(0); }
   20% { transform: translate(-2px, 2px); }
@@ -122,31 +147,31 @@ body {
 }
 
 .glitch-text {
-  animation: glitch 0.3s ease-in-out;
+  animation: glitch 300ms cubic-bezier(0.25, 0.1, 0.25, 1.0);
 }
 
-/* Flicker animation */
+/* Flicker — 3400ms (2100 × φ) */
 @keyframes flicker {
   0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
     opacity: 1;
   }
   20%, 24%, 55% {
-    opacity: 0.4;
+    opacity: 0.382;
   }
 }
 
 .flicker {
-  animation: flicker 3s infinite;
+  animation: flicker 3400ms infinite;
 }
 
-/* Particle float */
+/* Float — 5500ms (2100 × φ²) */
 @keyframes float {
   0%, 100% { transform: translateY(0px) translateX(0px); }
-  25% { transform: translateY(-10px) translateX(5px); }
-  50% { transform: translateY(-20px) translateX(-5px); }
-  75% { transform: translateY(-10px) translateX(10px); }
+  25% { transform: translateY(-8px) translateX(5px); }
+  50% { transform: translateY(-13px) translateX(-5px); }
+  75% { transform: translateY(-8px) translateX(8px); }
 }
 
 .float-particle {
-  animation: float 6s ease-in-out infinite;
+  animation: float 5500ms cubic-bezier(0.4, 0.0, 0.2, 1.0) infinite;
 }

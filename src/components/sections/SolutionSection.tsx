@@ -7,8 +7,10 @@ import NeonButton from "@/components/ui/NeonButton";
 
 const GlowDice = dynamic(() => import("@/components/3d/GlowDice"), {
   ssr: false,
-  loading: () => <div className="w-full h-full bg-surface/50 animate-pulse" />,
+  loading: () => <div className="w-full h-full bg-surface/[0.382] animate-pulse" />,
 });
+
+const easeEntry: [number, number, number, number] = [0.25, 0.1, 0.25, 1.0];
 
 const lightingModes = [
   { id: "uv", label: "UV LIGHT", color: "#8F00FF", intensity: 1.8 },
@@ -32,24 +34,22 @@ export default function SolutionSection() {
     <section
       ref={sectionRef}
       id="products"
-      className="relative min-h-screen bg-[#0A0A0F] py-24 overflow-hidden"
+      className="relative min-h-screen bg-[#0A0A0F] py-[5.25rem] overflow-hidden"
     >
-      {/* Background glow */}
       <div
-        className="absolute inset-0 transition-colors duration-1000"
+        className="absolute inset-0 transition-colors duration-[1000ms]"
         style={{
           background: `radial-gradient(circle at 60% 50%, ${activeMode.color}08 0%, transparent 50%)`,
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* 3D Viewer */}
+      <div className="relative z-10 max-w-[84.72rem] mx-auto px-[1.25rem]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-[3.25rem] items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1 }}
-            className="aspect-square max-w-lg mx-auto w-full"
+            transition={{ duration: 0.8, ease: easeEntry }}
+            className="aspect-square max-w-[32.36rem] mx-auto w-full"
           >
             <GlowDice
               interactive
@@ -57,23 +57,22 @@ export default function SolutionSection() {
               color={activeMode.color}
             />
 
-            {/* Lighting mode toggles */}
-            <div className="flex justify-center gap-3 mt-6">
+            <div className="flex justify-center gap-3 mt-[1.25rem]">
               {lightingModes.map((mode) => (
                 <button
                   key={mode.id}
                   onClick={() => setActiveMode(mode)}
-                  className={`px-4 py-2 text-xs tracking-[0.15em] uppercase border transition-all duration-300 cursor-pointer ${
+                  className={`px-[1.25rem] py-[0.5rem] text-[0.625rem] tracking-[0.162em] uppercase border transition-all duration-300 cursor-pointer ${
                     activeMode.id === mode.id
                       ? "border-current opacity-100"
-                      : "border-glow-white/20 opacity-50 hover:opacity-75"
+                      : "border-glow-white/[0.146] opacity-[0.382] hover:opacity-[0.618]"
                   }`}
                   style={{
                     fontFamily: "var(--font-heading)",
                     color: mode.color,
                     boxShadow:
                       activeMode.id === mode.id
-                        ? `0 0 15px ${mode.color}40`
+                        ? `0 0 13px ${mode.color}40`
                         : "none",
                   }}
                 >
@@ -83,22 +82,21 @@ export default function SolutionSection() {
             </div>
           </motion.div>
 
-          {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="space-y-8"
+            transition={{ duration: 0.8, delay: 0.3, ease: easeEntry }}
+            className="space-y-[2rem]"
           >
             <div>
               <p
-                className="text-neon-pink text-sm tracking-[0.3em] mb-4 uppercase"
+                className="text-neon-pink text-[0.625rem] tracking-[0.262em] mb-[1.25rem] uppercase"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
                 The Solution
               </p>
               <h2
-                className="text-4xl md:text-5xl lg:text-6xl font-black text-glow-white leading-none"
+                className="text-[2.625rem] lg:text-[4.25rem] font-black text-glow-white leading-none"
                 style={{ fontFamily: "var(--font-heading)" }}
               >
                 ENGINEERED FOR
@@ -107,24 +105,23 @@ export default function SolutionSection() {
               </h2>
             </div>
 
-            <p className="text-glow-white/60 text-lg leading-relaxed max-w-md">
+            <p className="text-glow-white/[0.618] text-[1rem] leading-relaxed max-w-[32.36rem]">
               Charge under light. Dominate in the dark. Our premium glow dice are
               precision-engineered for the players who own the night.
             </p>
 
-            {/* Features */}
-            <ul className="space-y-3">
+            <ul className="space-y-[0.75rem]">
               {features.map((feature, i) => (
                 <motion.li
                   key={i}
                   initial={{ opacity: 0, x: 20 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.5 + i * 0.1 }}
-                  className="flex items-center gap-3 text-glow-white/70"
+                  transition={{ delay: 0.5 + i * 0.185, ease: easeEntry }}
+                  className="flex items-center gap-3 text-glow-white/[0.618]"
                 >
                   <span
-                    className="w-2 h-2 rounded-full bg-neon-cyan"
-                    style={{ boxShadow: "0 0 8px #00F5FF" }}
+                    className="w-[0.5rem] h-[0.5rem] rounded-full bg-neon-cyan"
+                    style={{ boxShadow: "0 0 8px rgba(0,245,255,0.618)" }}
                   />
                   {feature}
                 </motion.li>

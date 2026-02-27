@@ -5,51 +5,49 @@ import { Instagram, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="relative bg-[#050508] border-t border-neon-pink/10">
-      <div className="max-w-7xl mx-auto px-6 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
-          {/* Brand */}
+    <footer className="relative bg-[#050508] border-t border-neon-pink/[0.09]">
+      <div className="max-w-[84.72rem] mx-auto px-[1.25rem] py-[3.25rem]">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-[3.25rem]">
           <div className="md:col-span-2">
             <h2
-              className="text-2xl font-black tracking-[0.3em] mb-4"
+              className="text-[1.625rem] font-black tracking-[0.262em] mb-[1.25rem]"
               style={{ fontFamily: "var(--font-heading)" }}
             >
               <span className="text-glow-white">BLACK OUT</span>{" "}
               <span className="text-neon-cyan">SUPPLY</span>
             </h2>
-            <p className="text-glow-white/50 max-w-sm leading-relaxed">
+            <p className="text-glow-white/[0.382] max-w-[20rem] leading-relaxed">
               Premium glow-in-the-dark products engineered for the after hours.
               When the lights go out, we glow.
             </p>
-            <div className="flex gap-4 mt-6">
+            <div className="flex gap-[1.25rem] mt-[1.25rem]">
               <a
                 href="#"
-                className="text-glow-white/50 hover:text-neon-pink transition-colors"
+                className="text-glow-white/[0.382] hover:text-neon-pink transition-colors"
               >
                 <Instagram size={20} />
               </a>
               <a
                 href="#"
-                className="text-glow-white/50 hover:text-neon-cyan transition-colors"
+                className="text-glow-white/[0.382] hover:text-neon-cyan transition-colors"
               >
                 <Twitter size={20} />
               </a>
             </div>
           </div>
 
-          {/* Links */}
           <div>
             <h3
-              className="text-sm tracking-[0.2em] text-neon-pink mb-4 uppercase"
+              className="text-[0.625rem] tracking-[0.162em] text-neon-pink mb-[1.25rem] uppercase"
               style={{ fontFamily: "var(--font-heading)" }}
             >
               Shop
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-[0.75rem]">
               <li>
                 <Link
                   href="/shop"
-                  className="text-glow-white/50 hover:text-glow-white transition-colors text-sm"
+                  className="text-glow-white/[0.382] hover:text-glow-white transition-colors text-[0.625rem]"
                 >
                   All Products
                 </Link>
@@ -57,37 +55,36 @@ export default function Footer() {
               <li>
                 <Link
                   href="/shop/glow-dice-set"
-                  className="text-glow-white/50 hover:text-glow-white transition-colors text-sm"
+                  className="text-glow-white/[0.382] hover:text-glow-white transition-colors text-[0.625rem]"
                 >
                   Glow Dice
                 </Link>
               </li>
               <li>
-                <span className="text-glow-white/30 text-sm">
+                <span className="text-glow-white/[0.236] text-[0.625rem]">
                   Golf Balls (Coming Soon)
                 </span>
               </li>
               <li>
-                <span className="text-glow-white/30 text-sm">
+                <span className="text-glow-white/[0.236] text-[0.625rem]">
                   Pong Balls (Coming Soon)
                 </span>
               </li>
             </ul>
           </div>
 
-          {/* Company */}
           <div>
             <h3
-              className="text-sm tracking-[0.2em] text-neon-cyan mb-4 uppercase"
+              className="text-[0.625rem] tracking-[0.162em] text-neon-cyan mb-[1.25rem] uppercase"
               style={{ fontFamily: "var(--font-heading)" }}
             >
               Company
             </h3>
-            <ul className="space-y-3">
+            <ul className="space-y-[0.75rem]">
               <li>
                 <Link
                   href="#founders"
-                  className="text-glow-white/50 hover:text-glow-white transition-colors text-sm"
+                  className="text-glow-white/[0.382] hover:text-glow-white transition-colors text-[0.625rem]"
                 >
                   About Us
                 </Link>
@@ -95,7 +92,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-glow-white/50 hover:text-glow-white transition-colors text-sm"
+                  className="text-glow-white/[0.382] hover:text-glow-white transition-colors text-[0.625rem]"
                 >
                   Campus Ambassadors
                 </Link>
@@ -103,7 +100,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="#"
-                  className="text-glow-white/50 hover:text-glow-white transition-colors text-sm"
+                  className="text-glow-white/[0.382] hover:text-glow-white transition-colors text-[0.625rem]"
                 >
                   Contact
                 </Link>
@@ -112,13 +109,12 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-16 pt-8 border-t border-glow-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-glow-white/30 text-xs tracking-wider">
+        <div className="mt-[3.25rem] pt-[2rem] border-t border-glow-white/[0.09] flex flex-col md:flex-row justify-between items-center gap-[1.25rem]">
+          <p className="text-glow-white/[0.236] text-[0.625rem] tracking-[0.1em]">
             &copy; {new Date().getFullYear()} BLACK OUT SUPPLY. ALL RIGHTS
             RESERVED.
           </p>
-          <p className="text-glow-white/20 text-xs tracking-wider">
+          <p className="text-glow-white/[0.146] text-[0.625rem] tracking-[0.1em]">
             FOUNDED BY TROY KASHUL & GAETANO CARBONARA
           </p>
         </div>

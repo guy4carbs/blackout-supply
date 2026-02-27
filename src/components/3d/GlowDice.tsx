@@ -5,6 +5,9 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, Environment, ContactShadows } from "@react-three/drei";
 import * as THREE from "three";
 
+/* φ = 1.618 — used for die geometry and motion
+   Fibonacci: 8, 13, 21, 34, 55 — used for counts and segments */
+
 function DiceMesh({
   autoRotate = true,
   glowIntensity = 1,
@@ -18,8 +21,8 @@ function DiceMesh({
   const glowRef = useRef<THREE.Mesh>(null);
 
   const pipPositions = useMemo(() => {
-    const size = 0.85;
-    const offset = 0.25;
+    const size = 0.809;    // 1.618 / 2 — half of golden ratio die
+    const offset = 0.309;  // size × φ⁻² (0.809 × 0.382)
     const faces: THREE.Vector3[][] = [
       // Face 1 (front, z+) - 1 pip
       [new THREE.Vector3(0, 0, size)],
@@ -64,20 +67,20 @@ function DiceMesh({
 
   useFrame((state) => {
     if (meshRef.current && autoRotate) {
-      meshRef.current.rotation.y += 0.005;
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+      meshRef.current.rotation.y += 0.00382;  // φ⁻³ scaled
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.236) * 0.0618;
     }
     if (glowRef.current && autoRotate) {
-      glowRef.current.rotation.y += 0.005;
-      glowRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
+      glowRef.current.rotation.y += 0.00382;
+      glowRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.236) * 0.0618;
     }
   });
 
   return (
     <group>
-      {/* Main dice body */}
+      {/* Main dice body — φ geometry */}
       <mesh ref={meshRef} castShadow>
-        <boxGeometry args={[1.7, 1.7, 1.7]} />
+        <boxGeometry args={[1.618, 1.618, 1.618]} />
         <meshStandardMaterial
           color="#111118"
           roughness={0.15}
@@ -87,9 +90,9 @@ function DiceMesh({
         />
       </mesh>
 
-      {/* Glow outline */}
-      <mesh ref={glowRef} scale={1.02}>
-        <boxGeometry args={[1.7, 1.7, 1.7]} />
+      {/* Glow outline — scale 1 + 1/34 (Fibonacci) */}
+      <mesh ref={glowRef} scale={1.03}>
+        <boxGeometry args={[1.618, 1.618, 1.618]} />
         <meshStandardMaterial
           color={color}
           transparent
@@ -100,10 +103,10 @@ function DiceMesh({
         />
       </mesh>
 
-      {/* Pips */}
+      {/* Pips — 21 sphere segments (Fibonacci) */}
       {pipPositions.map((pos, i) => (
         <mesh key={i} position={pos} rotation={meshRef.current?.rotation ?? new THREE.Euler()}>
-          <sphereGeometry args={[0.1, 16, 16]} />
+          <sphereGeometry args={[0.1, 21, 21]} />
           <meshStandardMaterial
             color={color}
             emissive={color}
@@ -119,23 +122,29 @@ function DiceMesh({
   );
 }
 
-function Particles({ count = 50, color = "#00F5FF" }: { count?: number; color?: string }) {
+/* 55 particles (Fibonacci) in golden-angle phyllotaxis spiral */
+function Particles({ count = 55, color = "#00F5FF" }: { count?: number; color?: string }) {
   const ref = useRef<THREE.Points>(null);
 
   const positions = useMemo(() => {
     const pos = new Float32Array(count * 3);
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // 137.5° in radians
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 10;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 10;
+      const theta = goldenAngle * i;
+      const y = 1 - (i / (count - 1)) * 2; // -1 to 1
+      const radiusAtY = Math.sqrt(1 - y * y);
+      const radius = 5;
+      pos[i * 3] = Math.cos(theta) * radiusAtY * radius;
+      pos[i * 3 + 1] = y * radius;
+      pos[i * 3 + 2] = Math.sin(theta) * radiusAtY * radius;
     }
     return pos;
   }, [count]);
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.rotation.y = state.clock.elapsedTime * 0.02;
-      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.01) * 0.1;
+      ref.current.rotation.y = state.clock.elapsedTime * 0.01618; // φ/100
+      ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.00618) * 0.0618;
     }
   });
 
@@ -147,7 +156,7 @@ function Particles({ count = 50, color = "#00F5FF" }: { count?: number; color?: 
 
   return (
     <points ref={ref} geometry={geometry}>
-      <pointsMaterial color={color} size={0.02} transparent opacity={0.6} sizeAttenuation />
+      <pointsMaterial color={color} size={0.021} transparent opacity={0.618} sizeAttenuation />
     </points>
   );
 }
@@ -166,14 +175,14 @@ export default function GlowDice({
   return (
     <div className={`w-full h-full ${className}`}>
       <Canvas
-        camera={{ position: [0, 0, 5], fov: 45 }}
+        camera={{ position: [0, 0, 5], fov: 42 }}
         gl={{ antialias: true, alpha: true }}
         style={{ background: "transparent" }}
       >
         <ambientLight intensity={0.1} />
         <directionalLight position={[5, 5, 5]} intensity={0.3} />
 
-        <Float speed={2} rotationIntensity={interactive ? 0 : 0.5} floatIntensity={0.5}>
+        <Float speed={1.618} rotationIntensity={interactive ? 0 : 0.382} floatIntensity={0.382}>
           <DiceMesh
             autoRotate={!interactive}
             glowIntensity={glowIntensity}
@@ -185,7 +194,7 @@ export default function GlowDice({
 
         <ContactShadows
           position={[0, -2, 0]}
-          opacity={0.3}
+          opacity={0.382}
           scale={10}
           blur={2}
           color={color}

@@ -12,37 +12,41 @@ interface NeonButtonProps {
   className?: string;
 }
 
+/* Fibonacci blur: 13px idle → 21px hover
+   φ-inverse opacity: 0.382 idle → 0.618 hover */
 const colorMap = {
   pink: {
     bg: "bg-neon-pink",
-    hover: "hover:bg-neon-pink/90",
-    shadow: "shadow-[0_0_20px_rgba(255,46,159,0.4)]",
-    hoverShadow: "hover:shadow-[0_0_30px_rgba(255,46,159,0.6)]",
+    hover: "hover:bg-neon-pink/[0.9]",
+    shadow: "shadow-[0_0_13px_rgba(255,46,159,0.382)]",
+    hoverShadow: "hover:shadow-[0_0_21px_rgba(255,46,159,0.618)]",
     text: "text-white",
     border: "border-neon-pink",
   },
   cyan: {
     bg: "bg-transparent",
-    hover: "hover:bg-neon-cyan/10",
-    shadow: "shadow-[0_0_15px_rgba(0,245,255,0.2)]",
-    hoverShadow: "hover:shadow-[0_0_25px_rgba(0,245,255,0.4)]",
+    hover: "hover:bg-neon-cyan/[0.09]",
+    shadow: "shadow-[0_0_13px_rgba(0,245,255,0.236)]",
+    hoverShadow: "hover:shadow-[0_0_21px_rgba(0,245,255,0.382)]",
     text: "text-neon-cyan",
     border: "border-neon-cyan",
   },
   purple: {
     bg: "bg-transparent",
-    hover: "hover:bg-neon-purple/10",
-    shadow: "shadow-[0_0_15px_rgba(143,0,255,0.2)]",
-    hoverShadow: "hover:shadow-[0_0_25px_rgba(143,0,255,0.4)]",
+    hover: "hover:bg-neon-purple/[0.09]",
+    shadow: "shadow-[0_0_13px_rgba(143,0,255,0.236)]",
+    hoverShadow: "hover:shadow-[0_0_21px_rgba(143,0,255,0.382)]",
     text: "text-neon-purple",
     border: "border-neon-purple",
   },
 };
 
+/* Golden ratio padding x:y ≈ φ:1
+   sm: 20:12 = 1.67  md: 32:20 = 1.6  lg: 52:32 = 1.625 */
 const sizeMap = {
-  sm: "px-5 py-2 text-xs",
-  md: "px-8 py-3 text-sm",
-  lg: "px-10 py-4 text-base",
+  sm: "px-[1.25rem] py-[0.75rem] text-[0.625rem]",
+  md: "px-[2rem] py-[1.25rem] text-[0.625rem]",
+  lg: "px-[3.25rem] py-[2rem] text-[1rem]",
 };
 
 export default function NeonButton({
@@ -60,7 +64,7 @@ export default function NeonButton({
     inline-block ${colors.bg} ${colors.hover} ${colors.text}
     ${sizeClass} border ${colors.border}
     ${colors.shadow} ${colors.hoverShadow}
-    tracking-[0.2em] uppercase font-bold
+    tracking-[0.162em] uppercase font-bold
     transition-all duration-300 cursor-pointer
     ${className}
   `.trim();
@@ -73,8 +77,8 @@ export default function NeonButton({
       onClick={onClick}
       className={buttonClasses}
       style={{ fontFamily: "var(--font-heading)" }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.047 }}
+      whileTap={{ scale: 0.952 }}
     >
       {children}
     </MotionComponent>
